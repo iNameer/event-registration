@@ -97,38 +97,38 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const qr = new QRCodeStyling({
-        width: 300,
-        height: 300,
-        type: "canvas",
-        data: "test-id-1234",
-        image: "logo.PNG",
-        dotsOptions: {
-  color: "#a72828",
-  type: "rounded"
-},
-cornersSquareOptions: {
-  type: "extra-rounded", // rounded outer squares
-  color: "#a72828"
-},
-cornersDotOptions: {
-  type: "dot", // rounded center dots inside corner squares
-  color: "#a72828"
-}
-        backgroundOptions: {
-          color: "#ffffff"
-        },
-        imageOptions: {
-          crossOrigin: "anonymous",
-          imageSize: 0.2
-        }
-      });
-
-      qr.append(document.getElementById("qr-preview"))
-        .then(() => console.log("✅ QR Code rendered to #qr-preview"))
-        .catch(err => console.error("❌ Failed to render QR code:", err));
+  document.addEventListener('DOMContentLoaded', () => {
+    const qr = new QRCodeStyling({
+      width: 300,
+      height: 300,
+      type: "canvas",
+      data: "test-id-1234",
+      image: "logo.PNG",
+      dotsOptions: {
+        color: "#a72828",
+        type: "rounded"
+      },
+      cornersSquareOptions: {
+        type: "extra-rounded",
+        color: "#a72828"
+      },
+      cornersDotOptions: {
+        type: "dot",
+        color: "#a72828"
+      },
+      backgroundOptions: {
+        color: "#ffffff"
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        imageSize: 0.2
+      }
     });
-  </script>
+
+    qr.append(document.getElementById("qr-preview"))
+      .then(() => console.log("✅ QR Code rendered to #qr-preview"))
+      .catch(err => console.error("❌ Failed to render QR code:", err));
+  });
+</script>
 </body>
 </html>
