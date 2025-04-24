@@ -111,17 +111,18 @@
       body: JSON.stringify({ name, phone, occupation, unique_id })
     });
 
-    const result = await response.json();
+    const resultText = await response.text();
+    console.log("🔍 Raw response from Supabase:", resultText);
 
     if (response.ok) {
       alert("✅ تم التسجيل بنجاح! سيتم إرسال رمز الدخول عبر واتساب.");
       document.getElementById('registrationForm').reset();
     } else {
-      console.error("🛑 Supabase Error:", result);
-      alert(`❌ حدث خطأ أثناء التسجيل: ${result.message || JSON.stringify(result)}`);
+      alert("❌ حدث خطأ أثناء التسجيل. تحقق من وحدة المطور لمعرفة التفاصيل.");
     }
   });
 </script>
+
 
 
 
