@@ -117,10 +117,11 @@
       alert("✅ تم التسجيل بنجاح! سيتم إرسال رمز الدخول عبر واتساب.");
       document.getElementById('registrationForm').reset();
     } else {
-      console.error(result);
-      alert("❌ حدث خطأ أثناء التسجيل. حاول مرة أخرى.");
+      console.error("🛑 Supabase Error:", result);
+      alert(`❌ حدث خطأ أثناء التسجيل: ${result.message || JSON.stringify(result)}`);
     }
   });
 </script>
+
 
 
