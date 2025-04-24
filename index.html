@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Registration</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/+esm"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .form-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    input, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register for the Event</h2>
+    <form id="registration-form">
+      <input type="text" name="name" placeholder="Full Name" required />
+      <input type="tel" name="phone" placeholder="Phone Number" required />
+      <input type="text" name="occupation" placeholder="Occupation" required />
+      <button type="submit">Register</button>
+    </form>
+    <p id="status"></p>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabaseUrl = 'https://vwaaflcmhmfggesqpwoa.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1MTA2NDAsImV4cCI6MjA2MTA4NjY0MH0.WbQOM5ge0xNQhItR5ai-Kyr0nARf2AizINm-4RDO1ok';
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const form = document.getElementById('registration-form');
+    const statusText = document.getElementById('status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const uniqueId = crypto.randomUUID(); // Generate a unique ID
+
+      const { data, error } = await supabase
+        .from('attendees')
+        .insert([{
+          name: formData.get('name'),
+          phone: formData.get('phone'),
+          occupation: formData.get('occupation'),
+          unique_id: uniqueId
+        }]);
+
+      if (error) {
+        console.error(error);
+        statusText.textContent = 'Error registering. Please try again.';
+      } else {
+        console.log(data);
+        statusText.textContent = 'Registered! You will receive a QR code via WhatsApp soon.';
+        form.reset();
+        // NEXT: trigger QR + WhatsApp from here
+      }
+    });
+  </script>
+</body>
+</html>
