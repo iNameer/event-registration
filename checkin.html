@@ -71,7 +71,7 @@
       }
 
       const attendee = data[0];
-      if (attendee.checked_in_status) {
+      if (attendee.check_in_status) {
         showMessage('error', `❌ ${attendee.name} تم تسجيله مسبقاً.`);
         return;
       }
@@ -80,7 +80,7 @@
       const updateRes = await fetch("https://vwaaflcmhmfggesqpwoa.supabase.co/rest/v1/attendees?unique_id=eq." + uid, {
         method: "PATCH",
         headers,
-        body: JSON.stringify({ checked_in_status: true, check_in_time: new Date().toISOString() })
+        body: JSON.stringify({ check_in_status: true, check_in_time: new Date().toISOString() })
       });
 
       if (updateRes.ok) {
