@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Event Registration</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/+esm"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -53,7 +54,14 @@
     <p id="status"></p>
   </div>
 
-  <script>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabaseUrl = 'https://vwaaflcmhmfggesqpwoa.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1MTA2NDAsImV4cCI6MjA2MTA4NjY0MH0.WbQOM5ge0xNQhItR5ai-Kyr0nARf2AizINm-4RDO1ok';
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     const form = document.getElementById('registration-form');
     const statusText = document.getElementById('status');
 
@@ -61,20 +69,26 @@
       e.preventDefault();
 
       const formData = new FormData(form);
-      const data = {
-        name: formData.get('name'),
-        phone: formData.get('phone'),
-        occupation: formData.get('occupation')
-      };
+      const uniqueId = crypto.randomUUID(); // Generate a unique ID
 
-      // TODO: Send data to backend or Supabase
-      statusText.textContent = 'Submitting...';
+      const { data, error } = await supabase
+        .from('attendees')
+        .insert([{
+          name: formData.get('name'),
+          phone: formData.get('phone'),
+          occupation: formData.get('occupation'),
+          unique_id: uniqueId
+        }]);
 
-      // Simulate success
-      setTimeout(() => {
-        statusText.textContent = 'Registration successful! You will receive a QR code shortly.';
+      if (error) {
+        console.error(error);
+        statusText.textContent = 'Error registering. Please try again.';
+      } else {
+        console.log(data);
+        statusText.textContent = 'Registered! You will receive a QR code via WhatsApp soon.';
         form.reset();
-      }, 1500);
+        // NEXT: trigger QR + WhatsApp from here
+      }
     });
   </script>
 </body>
