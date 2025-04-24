@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,18 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تسجيل مؤتمر IQIDS</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
   <style>
-    body { margin: 0; font-family: 'Tajawal', sans-serif; background: #f0f0f0; color: #333; direction: rtl; }
-    .container { background-color: #fff; max-width: 400px; margin: 50px auto; padding: 30px 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
-    .header { text-align: center; margin-bottom: 20px; }
-    .header img { max-width: 120px; }
-    .header h1 { font-size: 22px; margin: 10px 0 0; color: #a72828; }
-    label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold; }
-    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-    button { margin-top: 20px; background-color: #a72828; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-size: 16px; cursor: pointer; }
-    button:hover { background-color: #8c1e1e; }
-    .note { font-size: 13px; color: #555; margin-top: 5px; }
+    body {
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background: url('background.PNG') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      direction: rtl;
+    }
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header img {
+      max-width: 120px;
+    }
+    .header h1 {
+      font-size: 22px;
+      margin: 10px 0 0;
+      color: #a72828;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #a72828;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #8c1e1e;
+    }
+    .note {
+      font-size: 13px;
+      color: #555;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
