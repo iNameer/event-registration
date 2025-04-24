@@ -118,13 +118,56 @@
       return;
     }
 
-    // Step 2: Generate QR Code as base64
-    const qrBase64 = await QRCode.toDataURL(unique_id);
+    // Step 2: Generate QR with name + logo
+    const canvas = document.createElement("canvas");
+    await QRCode.toCanvas(canvas, unique_id, {
+      errorCorrectionLevel: 'H',
+      margin: 2,
+      scale: 8,
+      color: {
+        dark: "#a72828",
+        light: "#ffffff"
+      }
+    });
 
-    // Step 3: Prepare WhatsApp message
+    // Draw name & logo
+    const ctx = canvas.getContext("2d");
+    const logo = new Image();
+    logo.src = "logo.PNG";
+    await new Promise(resolve => { logo.onload = resolve; });
+
+    // Draw logo at center
+    const size = canvas.width;
+    const logoSize = size * 0.2;
+    const logoX = (size - logoSize) / 2;
+    const logoY = (size - logoSize) / 2;
+    ctx.drawImage(logo, logoX, logoY, logoSize, logoSize);
+
+    // Extend canvas height to add name
+    const finalCanvas = document.createElement("canvas");
+    finalCanvas.width = size;
+    finalCanvas.height = size + 40;
+    const finalCtx = finalCanvas.getContext("2d");
+
+    // White background
+    finalCtx.fillStyle = "#ffffff";
+    finalCtx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+    // Draw original QR code
+    finalCtx.drawImage(canvas, 0, 0);
+
+    // Draw name
+    finalCtx.font = "16px Tajawal, sans-serif";
+    finalCtx.fillStyle = "#a72828";
+    finalCtx.textAlign = "center";
+    finalCtx.fillText(name, size / 2, size + 30);
+
+    // Convert to base64 image
+    const qrBase64 = finalCanvas.toDataURL("image/png");
+
+    // Step 3: Send via WhatsApp (UltraMsg)
     const message = `مرحباً ${name}،\n\nشكرًا لتسجيلك في مؤتمر IQIDS 🎓\n\nيرجى الاحتفاظ برمز QR المرفق — ستحتاجه عند الدخول إلى المؤتمر.\n\n📍 هذا الرمز خاص بك ولا يمكن استخدامه من قبل شخص آخر.\n🚫 لا تشارك هذا الرمز مع أي شخص آخر.\n\nنتطلع لرؤيتك!`;
 
-    // Step 4: Send via UltraMsg
     const ultraMsgResponse = await fetch("https://api.ultramsg.com/instance116472/messages/image", {
       method: "POST",
       headers: {
@@ -144,12 +187,13 @@
     if (result?.sent === true || result?.status === "sent") {
       alert("✅ تم التسجيل بنجاح! تم إرسال رمز الدخول عبر واتساب.");
     } else {
-      alert("✅ تم التسجيل، لكن حدث خطأ أثناء إرسال الواتساب. يرجى التواصل مع الدعم.");
+      alert("✅ تم التسجيل، لكن حدث خطأ أثناء إرسال الواتساب.");
     }
 
     document.getElementById('registrationForm').reset();
   });
 </script>
+
 
 
 
