@@ -91,33 +91,35 @@
     </form>
   </div>
 
-  <script>
-    // Connect this with Supabase in the next step
-    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const occupation = document.getElementById('occupation').value.trim();
-      const unique_id = crypto.randomUUID();
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-      const { data, error } = await fetch("https://vwaaflcmhmfggesqpwoa.supabase.co/rest/v1/attendees", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1MTA2NDAsImV4cCI6MjA2MTA4NjY0MH0.WbQOM5ge0xNQhItR5ai-Kyr0nARf2AizINm-4RDO1ok",
-          "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1MTA2NDAsImV4cCI6MjA2MTA4NjY0MH0.WbQOM5ge0xNQhItR5ai-Kyr0nARf2AizINm-4RDO1ok",
-          "Prefer": "return=representation"
-        },
-        body: JSON.stringify({ name, phone, occupation, unique_id })
-      }).then(res => res.json());
+  const supabaseUrl = 'https://vwaaflcmhmfggesqpwoa.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1MTA2NDAsImV4cCI6MjA2MTA4NjY0MH0.WbQOM5ge0xNQhItR5ai-Kyr0nARf2AizINm-4RDO1ok';
 
-      if (error || data?.message) {
-        alert("حدث خطأ أثناء التسجيل. حاول مرة أخرى.");
-      } else {
-        alert("✅ تم التسجيل بنجاح! سيتم إرسال رمز الدخول عبر واتساب.");
-        // Here we'll add QR + WhatsApp code next
-      }
-    });
-  </script>
-</body>
-</html>
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  const form = document.getElementById('registrationForm');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const occupation = document.getElementById('occupation').value.trim();
+    const unique_id = crypto.randomUUID();
+
+    const { data, error } = await supabase
+      .from('attendees')
+      .insert([{ name, phone, occupation, unique_id }]);
+
+    if (error) {
+      console.error(error);
+      alert("❌ حدث خطأ أثناء التسجيل. تأكد من الاتصال وأعد المحاولة.");
+    } else {
+      alert("✅ تم التسجيل بنجاح! سيتم إرسال رمز الدخول عبر واتساب.");
+      form.reset();
+    }
+  });
+</script>
+
