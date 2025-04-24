@@ -91,7 +91,7 @@
     </form>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling/lib/qr-code-styling.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 <script>
   document.getElementById('registrationForm').addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -118,11 +118,16 @@
       return;
     }
 
-    // 2. Create and render QR using qr-code-styling
+    // 2. Prepare visible QR container
+    const tempDiv = document.createElement("div");
+    tempDiv.style.position = "absolute";
+    tempDiv.style.left = "-9999px";
+    document.body.appendChild(tempDiv);
+
+    // 3. Generate QR with qr-code-styling
     const qr = new QRCodeStyling({
       width: 512,
       height: 512,
-      type: "canvas",
       data: unique_id,
       image: "logo.PNG",
       dotsOptions: {
@@ -138,21 +143,21 @@
       }
     });
 
-    // Get raw QR image as blob
-    const qrBlob = await qr.getRawData("png");
+    await qr.append(tempDiv);
 
-    // Convert blob to ImageBitmap
-    const imgBitmap = await createImageBitmap(qrBlob);
+    // Wait for DOM render
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    // 3. Create final canvas with name
+    // Capture rendered canvas
+    const qrCanvas = tempDiv.querySelector("canvas");
     const finalCanvas = document.createElement("canvas");
     finalCanvas.width = 512;
     finalCanvas.height = 580;
-    const ctx = finalCanvas.getContext("2d");
 
+    const ctx = finalCanvas.getContext("2d");
     ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, 512, 580);
-    ctx.drawImage(imgBitmap, 0, 0);
+    ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+    ctx.drawImage(qrCanvas, 0, 0);
 
     ctx.fillStyle = "#a72828";
     ctx.font = "22px Tajawal, sans-serif";
@@ -161,7 +166,9 @@
 
     const base64QR = finalCanvas.toDataURL("image/png");
 
-    // 4. Send via WhatsApp (UltraMsg)
+    tempDiv.remove();
+
+    // 4. Send via UltraMsg
     const message = `مرحباً ${name}،\n\nشكرًا لتسجيلك في مؤتمر IQIDS 🎓\n\nيرجى الاحتفاظ برمز QR المرفق — ستحتاجه عند الدخول إلى المؤتمر.\n\n📍 هذا الرمز خاص بك ولا يمكن استخدامه من قبل شخص آخر.\n🚫 لا تشارك هذا الرمز مع أي شخص آخر.\n\nنتطلع لرؤيتك!`;
 
     const send = await fetch("https://api.ultramsg.com/instance116472/messages/image", {
@@ -179,12 +186,13 @@
     if (result.sent || result.status === "sent") {
       alert("✅ تم التسجيل وتم إرسال الرمز عبر واتساب.");
     } else {
-      alert("تم التسجيل، لكن حدثت مشكلة في إرسال الرمز عبر واتساب.");
+      alert("تم التسجيل، لكن لم يتم إرسال الواتساب.");
     }
 
     document.getElementById('registrationForm').reset();
   });
 </script>
+
 
 
 
