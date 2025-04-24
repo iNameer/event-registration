@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase Insert Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.4/+esm"></script>
+</head>
+<body>
+  <h2>Test Insert to Supabase</h2>
+  <button id="test-btn">Insert Test User</button>
+  <pre id="output"></pre>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://vwaaflcmhmfggesqpwoa.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1MTA2NDAsImV4cCI6MjA2MTA4NjY0MH0.WbQOM5ge0xNQhItR5ai-Kyr0nARf2AizINm-4RDO1ok';
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const output = document.getElementById('output');
+
+    document.getElementById('test-btn').addEventListener('click', async () => {
+      const { data, error } = await supabase
+        .from('attendees')
+        .insert([{
+          name: 'Test User',
+          phone: '1234567890',
+          occupation: 'Tester',
+          unique_id: crypto.randomUUID()
+        }]);
+
+      if (error) {
+        output.textContent = `❌ Error:\n${JSON.stringify(error, null, 2)}`;
+      } else {
+        output.textContent = `✅ Success:\n${JSON.stringify(data, null, 2)}`;
+      }
+    });
+  </script>
+</body>
+</html>
