@@ -91,11 +91,38 @@
     </form>
   </div>
 
-
+  <!-- 🔍 Diagnostic QR Code Preview -->
 <div id="qr-preview" style="margin: 20px auto; width: 320px; border: 2px dashed #ccc; padding: 20px; text-align: center;">
   <p>🔍 QR Preview Box (check if rounded and red)</p>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const qr = new QRCodeStyling({
+      width: 300,
+      height: 300,
+      type: "canvas",
+      data: "test-id-1234",
+      image: "logo.PNG",
+      dotsOptions: {
+        color: "#a72828",
+        type: "rounded"
+      },
+      backgroundOptions: {
+        color: "#ffffff"
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        imageSize: 0.2
+      }
+    });
+
+    qr.append(document.getElementById("qr-preview"))
+      .then(() => console.log("✅ QR Code rendered to #qr-preview"))
+      .catch(err => console.error("❌ Failed to render QR code:", err));
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
 <script>
