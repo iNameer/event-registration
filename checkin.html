@@ -98,8 +98,25 @@
     }, (decodedText) => {
       scanner.stop().then(() => {
         markCheckedIn(decodedText.trim()).finally(() => {
-          setTimeout(() => scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, () => {}, () => {}), 1500);
-        });
+  const resultBox = document.getElementById("result");
+  const scanButton = document.createElement("button");
+  scanButton.textContent = "📷 مسح رمز آخر";
+  scanButton.style.marginTop = "15px";
+  scanButton.style.padding = "10px 20px";
+  scanButton.style.fontSize = "16px";
+  scanButton.style.borderRadius = "8px";
+  scanButton.style.border = "none";
+  scanButton.style.backgroundColor = "#a72828";
+  scanButton.style.color = "white";
+  scanButton.onclick = () => {
+    scanButton.remove();
+    scanner.start({ facingMode: "environment" }, {
+      fps: 10,
+      qrbox: { width: 250, height: 250 }
+    }, onScanSuccess, () => {});
+  };
+  resultBox.appendChild(scanButton);
+});
       });
     }, (error) => {
       // ignore scan errors
