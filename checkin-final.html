@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>نظام تسجيل الدخول - IQIDS</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      padding: 20px;
+    }
+    #reader {
+      width: 100%;
+      max-width: 400px;
+      margin: auto;
+    }
+    .result-box {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 18px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .info {
+      background-color: #cce5ff;
+      color: #004085;
+    }
+    button.scan-again {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background-color: #a72828;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>نظام تسجيل الحضور - مؤتمر IQIDS</h2>
+  <div id="reader"></div>
+  <div id="result" class="result-box info">📷 استخدم الكاميرا لمسح رمز QR</div>
+  <audio id="beep" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" preload="auto"></audio>
+  <button id="audioUnlock" style="position:absolute;opacity:0;pointer-events:auto;">.</button>
+
+  <script>
+    const beep = document.getElementById('beep');
+
+    // Unlock audio playback on first interaction
+    document.getElementById('audioUnlock').addEventListener('click', () => {
+      beep.play().then(() => beep.pause()).catch(() => {});
+    });
+    window.addEventListener('touchstart', () => {
+      document.getElementById('audioUnlock').click();
+    }, { once: true });
+    window.addEventListener('click', () => {
+      document.getElementById('audioUnlock').click();
+    }, { once: true });
+
+    function showMessage(type, message) {
+      const result = document.getElementById('result');
+      result.className = 'result-box ' + type;
+      result.innerHTML = message;
+    }
+
+    async function markCheckedIn(uid) {
+      const url = "https://vwaaflcmhmfggesqpwoa.supabase.co/rest/v1/attendees?unique_id=eq." + uid;
+      const headers = {
+        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "Content-Type": "application/json",
+        "Prefer": "return=representation"
+      };
+
+      const res = await fetch(url, { headers });
+      const data = await res.json();
+
+      if (data.length === 0) {
+        showMessage('error', '❌ لم يتم العثور على الحضور.');
+        showScanAgainButton();
+        return;
+      }
+
+      const attendee = data[0];
+      if (attendee.checked_in) {
+        showMessage('error', `❌ ${attendee.name} تم تسجيله مسبقاً.`);
+        showScanAgainButton();
+        return;
+      }
+
+      const updateRes = await fetch("https://vwaaflcmhmfggesqpwoa.supabase.co/rest/v1/attendees?unique_id=eq." + uid, {
+        method: "PATCH",
+        headers,
+        body: JSON.stringify({ checked_in: true, check_in_time: new Date().toISOString() })
+      });
+
+      if (updateRes.ok) {
+        beep.play();
+        showMessage('success', `✅ تم تسجيل ${attendee.name} بنجاح!<br>📱 ${attendee.phone}<br>💼 ${attendee.occupation}`);
+      } else {
+        showMessage('error', '⚠️ حدث خطأ أثناء التسجيل.');
+      }
+
+      showScanAgainButton();
+    }
+
+    function showScanAgainButton() {
+      const resultBox = document.getElementById("result");
+      const scanButton = document.createElement("button");
+      scanButton.textContent = "📷 مسح رمز آخر";
+      scanButton.className = "scan-again";
+      scanButton.onclick = () => {
+        scanButton.remove();
+        scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 } }, onScanSuccess, () => {});
+      };
+      resultBox.appendChild(scanButton);
+    }
+
+    function onScanSuccess(decodedText) {
+      scanner.stop().then(() => {
+        markCheckedIn(decodedText.trim());
+      });
+    }
+
+    const scanner = new Html5Qrcode("reader");
+    scanner.start({ facingMode: "environment" }, {
+      fps: 10,
+      qrbox: { width: 250, height: 250 }
+    }, onScanSuccess, (error) => {
+      // ignore scan errors
+    });
+  </script>
+</body>
+</html>
