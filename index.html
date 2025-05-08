@@ -16,59 +16,122 @@
       color: #333;
       direction: rtl;
     }
-
-    .container { background-color: #fff; opacity: 0.9; max-width: 400px; margin: 50px auto; padding: 30px 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
-    .header { text-align: center; margin-bottom: 20px; }
-    .header img { max-width: 120px; }
-    .header h1 { font-size: 22px; margin: 10px 0 0; color: #a72828; }
-    label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold; }
-    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-    button { margin-top: 20px; background-color: #a72828; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-size: 16px; cursor: pointer; }
-    button:hover { background-color: #8c1e1e; }
-    .note { font-size: 13px; color: #555; margin-top: 5px; }
+    .container, .login-container {
+      background-color: #fff;
+      opacity: 0.95;
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header img {
+      max-width: 120px;
+    }
+    .header h1 {
+      font-size: 22px;
+      margin: 10px 0 0;
+      color: #a72828;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #a72828;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #8c1e1e;
+    }
+    .note {
+      font-size: 13px;
+      color: #555;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body>
+
+<div id="login" class="login-container">
+  <div class="header">
+    <img src="logo.PNG" alt="شعار الشركة" />
+    <h1>تسجيل دخول المسؤول</h1>
+  </div>
+  <label for="username">اسم المستخدم</label>
+  <input type="text" id="username" placeholder="waqas أو azoz" />
+  <label for="password">كلمة المرور</label>
+  <input type="password" id="password" placeholder="كلمة المرور" />
+  <button onclick="login()">تسجيل الدخول</button>
+</div>
+
+<div id="formContainer" style="display:none;">
+  <div class="container">
+    <div class="header">
+      <img src="logo.PNG" alt="شعار الشركة" />
+      <h1>استمارة تسجيل مؤتمر IQIDS</h1>
+    </div>
+    <form id="registrationForm">
+      <label for="name">الاسم الثلاثي باللغة الإنكليزية</label>
+      <div class="note">هذا الاسم سيتم كتابته على شهادة المشاركة بالمؤتمر</div>
+      <input type="text" id="name" name="name" required />
+      <label for="phone">رقم الهاتف</label>
+      <div class="note">يجب أن يحتوي على واتساب – يرجى إدخال الرقم مع مفتاح الدولة (:964xxxxxxx+)</div>
+      <input type="tel" id="phone" name="phone" required />
+      <label for="occupation">المهنة</label>
+      <div class="note">مثال: طالب، مهندس، طبيب...</div>
+      <input type="text" id="occupation" name="occupation" required />
+      <button type="submit">تسجيل</button>
+    </form>
+  </div>
+</div>
+
 <script>
   const admins = {
     "waqas": "waqas2025",
-    "azoz": "azoz2025"
+    "azoz": "azoz 2025"
   };
 
-  const authenticated = sessionStorage.getItem("admin_authenticated");
-
-  if (!authenticated) {
-    const username = prompt("👤 أدخل اسم المستخدم:");
-    const password = prompt("🔐 أدخل كلمة المرور:");
-
-    if (admins[username] && admins[username] === password) {
+  function login() {
+    const user = document.getElementById("username").value.trim();
+    const pass = document.getElementById("password").value.trim();
+    if (admins[user] && admins[user] === pass) {
       sessionStorage.setItem("admin_authenticated", "true");
-      sessionStorage.setItem("admin_user", username);
+      sessionStorage.setItem("admin_user", user);
+      document.getElementById("login").style.display = "none";
+      document.getElementById("formContainer").style.display = "block";
     } else {
       alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة.");
-      window.location.href = "https://google.com";
     }
   }
-</script>
 
-<div class="container">
-  <div class="header">
-    <img src="logo.PNG" alt="شعار الشركة" />
-    <h1>استمارة تسجيل مؤتمر IQIDS</h1>
-  </div>
-  <form id="registrationForm">
-    <label for="name">الاسم الثلاثي باللغة الإنكليزية</label>
-    <div class="note">هذا الاسم سيتم كتابته على شهادة المشاركة بالمؤتمر</div>
-    <input type="text" id="name" name="name" required />
-    <label for="phone">رقم الهاتف</label>
-    <div class="note">يجب أن يحتوي على واتساب – يرجى إدخال الرقم مع مفتاح الدولة (:964xxxxxxx+)</div>
-    <input type="tel" id="phone" name="phone" required />
-    <label for="occupation">المهنة</label>
-    <div class="note">مثال: طالب، مهندس، طبيب...</div>
-    <input type="text" id="occupation" name="occupation" required />
-    <button type="submit">تسجيل</button>
-  </form>
-</div>
+  // Auto-login if already authenticated
+  window.onload = () => {
+    if (sessionStorage.getItem("admin_authenticated")) {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("formContainer").style.display = "block";
+    }
+  };
 
 <script>
   document.getElementById('registrationForm').addEventListener('submit', async function (e) {
