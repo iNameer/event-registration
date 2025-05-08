@@ -29,6 +29,31 @@
   </style>
 </head>
 <body>
+  <script>
+  // 🧑‍💼 Step 1: Define allowed usernames and passwords
+  const admins = {
+    "waqas": "waqas2025",
+    "azoz": "azoz 2025"
+  };
+
+  // 🧠 Step 2: Check if already logged in (sessionStorage keeps it for one browser tab)
+  const authenticated = sessionStorage.getItem("admin_authenticated");
+
+  if (!authenticated) {
+    const username = prompt("👤 أدخل اسم المستخدم:");
+    const password = prompt("🔐 أدخل كلمة المرور:");
+
+    // ✅ Step 3: Check if username/password are correct
+    if (admins[username] && admins[username] === password) {
+      sessionStorage.setItem("admin_authenticated", "true");
+      sessionStorage.setItem("admin_user", username); // ✅ Save who logged in
+    } else {
+      alert("❌ اسم المستخدم أو كلمة المرور غير صحيحة.");
+      window.location.href = "https://google.com"; // redirect if wrong
+    }
+  }
+</script>
+
   <div class="container">
     <div class="header">
       <img src="logo.PNG" alt="شعار الشركة" />
