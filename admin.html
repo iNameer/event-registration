@@ -99,8 +99,17 @@
     <div class="note">يجب أن يحتوي على واتساب – يرجى إدخال الرقم مع مفتاح الدولة (:964xxxxxxx+)</div>
     <input type="tel" id="phone" name="phone" required />
     <label for="occupation">المهنة</label>
-    <div class="note">مثال: طالب، مهندس، طبيب...</div>
-    <input type="text" id="occupation" name="occupation" required />
+<div class="note">يرجى اختيار المهنة من القائمة</div>
+<select id="occupation" name="occupation" required>
+  <option value="">اختر المهنة</option>
+  <option value="طالب">طالب</option>
+  <option value="طبيب أسنان">طبيب أسنان</option>
+  <option value="تقني صناعة أسنان">تقني صناعة أسنان</option>
+  <option value="أستاذ جامعي">أستاذ جامعي</option>
+  <option value="زائر">زائر</option>
+  <option value="أخرى">أخرى</option>
+</select>
+
     <button type="submit">تسجيل</button>
   </form>
 </div>
