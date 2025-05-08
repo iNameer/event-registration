@@ -153,9 +153,70 @@
     });
 
     if (!response.ok) {
-      alert("❌ حدث خطأ أثناء التسجيل.");
-      return;
-    }
+        alert("❌ حدث خطأ أثناء التسجيل.");
+        return;
+      }
+
+      // Generate QR
+      const qr = new QRCodeStyling({
+        width: 512,
+        height: 512,
+        data: unique_id,
+        image: "logo.PNG",
+        dotsOptions: { color: "#a72828", type: "rounded" },
+        cornersSquareOptions: { type: "extra-rounded", color: "#a72828" },
+        cornersDotOptions: { type: "dot", color: "#a72828" },
+        backgroundOptions: { color: "#ffffff" },
+        imageOptions: { crossOrigin: "anonymous", imageSize: 0.2 }
+      });
+
+      const blob = await qr.getRawData("png");
+      const imgBitmap = await createImageBitmap(blob);
+
+      const finalCanvas = document.createElement("canvas");
+      finalCanvas.width = 512;
+      finalCanvas.height = 580;
+      const ctx = finalCanvas.getContext("2d");
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+      ctx.drawImage(imgBitmap, 0, 0);
+
+      ctx.fillStyle = "#a72828";
+      ctx.font = "22px Tajawal, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(name, 256, 560);
+
+      const base64QR = finalCanvas.toDataURL("image/png");
+
+      const message = `مرحباً ${name}،
+
+شكرًا لتسجيلك في مؤتمر IQIDS 🎓
+
+يرجى الاحتفاظ برمز QR المرفق — ستحتاجه عند الدخول إلى المؤتمر.
+
+📍 هذا الرمز خاص بك ولا يمكن استخدامه من قبل شخص آخر.
+🚫 لا تشارك هذا الرمز مع أي شخص آخر.
+
+نتطلع لرؤيتك!`;
+
+      const send = await fetch("https://api.ultramsg.com/instance117839/messages/image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: "tz99z4sjn5xz8npg",
+          to: phone,
+          image: base64QR,
+          caption: message
+        })
+      });
+
+      const result = await send.json();
+      if (result.sent || result.status === "sent") {
+        alert("✅ تم التسجيل وتم إرسال الرمز عبر واتساب.");
+      } else {
+        alert("تم التسجيل، لكن لم يتم إرسال الواتساب.");
+      }
 
     alert("✅ تم التسجيل بنجاح!");
     document.getElementById('registrationForm').reset();
