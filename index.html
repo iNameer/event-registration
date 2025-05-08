@@ -71,7 +71,7 @@
           "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVja21zbXlmanNzcGJnYnJ3dnpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MzEzMzIsImV4cCI6MjA2MjMwNzMzMn0.5uzGumqbFbhNhz8FWNKKK1hWQg9F8_Kwvk2kL_HoW-c",
           "Prefer": "return=representation"
         },
-        body: JSON.stringify({ name, phone, occupation, unique_id })
+        body: JSON.stringify({ name, phone, occupation })
       });
 
       if (!response.ok) {
