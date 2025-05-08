@@ -166,10 +166,11 @@ window.onload = () => {
   if (sessionStorage.getItem("admin_authenticated")) {
     document.getElementById("login").style.display = "none";
     document.getElementById("formContainer").style.display = "block";
+    document.getElementById('registrationForm').addEventListener('submit', async function (e) {
   }
 };
 </script>
-      document.getElementById('registrationForm').reset();
+     
     });
   </script>
 </body>
