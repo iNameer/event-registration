@@ -32,7 +32,7 @@
 <script>
   const admins = {
     "waqas": "waqas2025",
-    "azoz": "azoz 2025"
+    "azoz": "azoz2025"
   };
 
   const authenticated = sessionStorage.getItem("admin_authenticated");
@@ -82,8 +82,8 @@
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NTUxMDY0MCwiZXhwIjoyMDYxMDg2NjQwfQ.5KvuuRRpD-MTuPaGIbc6ApEcicdiUpgBpo4MvFYQ9CQ",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0NTUxMDY0MCwiZXhwIjoyMDYxMDg2NjQwfQ.5KvuuRRpD-MTuPaGIbc6ApEcicdiUpgBpo4MvFYQ9CQ",
         "Prefer": "return=representation"
       },
       body: JSON.stringify({ name, phone, occupation, unique_id })
