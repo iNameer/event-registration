@@ -113,9 +113,9 @@
         })
       });
 
-      const result = await send.json();
+       const result = await send.json();
       if (result.sent || result.status === "sent") {
-        alert("تم التسجيل ويرجى مراجعة تعليمات الحجز عبر الوتساب ✅.");
+        alert("✅ تم التسجيل وتم إرسال الرمز عبر واتساب.");
       } else {
         alert("تم التسجيل، لكن لم يتم إرسال الواتساب.");
       }
