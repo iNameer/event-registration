@@ -8,23 +8,46 @@
   <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
   <style>
     body {
-  margin: 0;
-  font-family: 'Tajawal', sans-serif;
-  background: url('background.PNG') no-repeat center center fixed;
-  background-size: cover;
-  color: #333;
-  direction: rtl;
-}
-
-    .container { background-color: #fff; opacity: 0.9; max-width: 400px; margin: 50px auto; padding: 30px 25px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+      margin: 0;
+      font-family: 'Tajawal', sans-serif;
+      background: url('background.PNG') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      direction: rtl;
+    }
+    .container {
+      background-color: #fff;
+      opacity: 0.9;
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
     .header { text-align: center; margin-bottom: 20px; }
     .header img { max-width: 120px; }
     .header h1 { font-size: 22px; margin: 10px 0 0; color: #a72828; }
     label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold; }
-    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-    button { margin-top: 20px; background-color: #a72828; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-size: 16px; cursor: pointer; }
-    button:hover { background-color: #8c1e1e; }
     .note { font-size: 13px; color: #555; margin-top: 5px; }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #a72828;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover { background-color: #8c1e1e; }
   </style>
 </head>
 <body>
@@ -35,52 +58,91 @@
     </div>
     <form id="registrationForm">
       <label for="name">الاسم الثلاثي باللغة الإنكليزية</label>
-      <div class="note">هذا الاسم سيتم كتابته على شهادة المشاركة بالمؤتمر</div>
       <input type="text" id="name" name="name" required />
       <label for="phone">رقم الهاتف</label>
-      <div class="note">يجب أن يحتوي على واتساب – يرجى إدخال الرقم مع مفتاح الدولة (:964xxxxxxx+)</div>
+      <div class="note">يجب أن يحتوي على واتساب – مثال: 077xxxxxxxx</div>
       <input type="tel" id="phone" name="phone" required />
       <label for="occupation">المهنة</label>
-<div class="note">يرجى اختيار المهنة من القائمة</div>
-<select id="occupation" name="occupation" required>
-  <option value="">اختر المهنة</option>
-  <option value="طالب">طالب</option>
-  <option value="طبيب أسنان">طبيب أسنان</option>
-  <option value="تقني صناعة أسنان">تقني صناعة أسنان</option>
-  <option value="أستاذ جامعي">أستاذ جامعي</option>
-  <option value="زائر">زائر</option>
-  <option value="أخرى">أخرى</option>
-</select>
+      <div class="note">يرجى اختيار المهنة من القائمة</div>
+      <select id="occupation" name="occupation" required>
+        <option value="">اختر المهنة</option>
+        <option value="طالب">طالب</option>
+        <option value="طبيب أسنان">طبيب أسنان</option>
+        <option value="تقني صناعة أسنان">تقني صناعة أسنان</option>
+        <option value="أستاذ جامعي">أستاذ جامعي</option>
+        <option value="زائر">زائر</option>
+        <option value="أخرى">أخرى</option>
+      </select>
       <button type="submit">تسجيل</button>
     </form>
   </div>
 
   <script>
-    document.getElementById('registrationForm').addEventListener('submit', async function (e) {
+    document.getElementById('registrationForm')
+      .addEventListener('submit', async function (e) {
       e.preventDefault();
+
       const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
+      let phone = document.getElementById('phone').value.trim();
       const occupation = document.getElementById('occupation').value;
-      
-      // Save to Supabase
-      const response = await fetch("https://uckmsmyfjsspbgbrwvzf.supabase.co/rest/v1/Registration", {
+
+      // (Optional) ensure international format if needed:
+      // if (!phone.startsWith('+964')) phone = '+964' + phone.replace(/^0+/, '');
+
+      // 1️⃣ Save to Supabase
+      const response = await fetch(
+        "https://uckmsmyfjsspbgbrwvzf.supabase.co/rest/v1/Registration", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVja21zbXlmanNzcGJnYnJ3dnpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MzEzMzIsImV4cCI6MjA2MjMwNzMzMn0.5uzGumqbFbhNhz8FWNKKK1hWQg9F8_Kwvk2kL_HoW-c",
-          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVja21zbXlmanNzcGJnYnJ3dnpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MzEzMzIsImV4cCI6MjA2MjMwNzMzMn0.5uzGumqbFbhNhz8FWNKKK1hWQg9F8_Kwvk2kL_HoW-c",
+          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVja21zbXlmanNzcGJnYnJ3dnpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MzEzMzIsImV4cCI6MjA2MjMwNzMzMn0.5uzGumqbFbhNhz8FWNKKK1hWQg9F8_Kwvk2kL_HoW-c",              // your Supabase anon key
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVja21zbXlmanNzcGJnYnJ3dnpmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY3MzEzMzIsImV4cCI6MjA2MjMwNzMzMn0.5uzGumqbFbhNhz8FWNKKK1hWQg9F8_Kwvk2kL_HoW-c", // your Supabase anon key
           "Prefer": "return=representation"
         },
         body: JSON.stringify({ name, phone, occupation })
       });
 
       if (!response.ok) {
-      alert("❌ حدث خطأ أثناء التسجيل.");
-      return;
-    }
+        alert("❌ حدث خطأ أثناء التسجيل.");
+        return;
+      }
 
-    alert("✅ تم التسجيل بنجاح!");
+      // 2️⃣ Send plain-text WhatsApp via UltraMsg
+const message = `السادة المشاركون الكرام
+
+يسرّ فريق رؤيا – اللجنة المنظمة أن يُعلن عن قبولكم للمشاركة في المعرض والمؤتمر العالمي العراقي لطب الأسنان، والذي سيُقام في
  
+📍قاعة الأبرار – الجادرية - بغداد
+
+وذلك في يومي 30 و31 من شهر أيار (مايو) 2025
+ 
+بحضور نخبة من الاطباء وتقنيي صناعة الاسنان  الدوليين، ومشاركة واسعة من شركات ومراكز عالمية رائدة في مجالات طب الأسنان وتقنيات صناعة الأسنان.
+
+🔹رسوم الاشتراك: 35,000 دينار عراقي فقط
+🔹لتأكيد حجز مقعدكم، يرجى تسديد الرسوم عبر أحد الأرقام التالية:
+زين كاش 
+
+د. [وقاص الكرخي] – [ 07732934320  ]
+
+[عز الدين حسين]  –   [ 07763315131 ]
+
+✨ المقاعد محدودة، والمشاركة المسبقة تضمن لكم مكانًا بين نخبة المتخصصين، وفرصة استثنائية لبناء علاقات مهنية واستكشاف فرص جديدة.
+
+مع خالص التقدير،
+تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
+
+await fetch("https://api.ultramsg.com/instance117965/messages/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    token: "7rn5yw3sjmdr3hnf",
+    to: phone,
+    body: message
+  })
+});
+
+
+      alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
       document.getElementById('registrationForm').reset();
     });
   </script>
