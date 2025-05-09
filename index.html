@@ -58,7 +58,10 @@
     document.getElementById('registrationForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
-      const phone = document.getElementById('phone').value.trim();
+      let phone = document.getElementById('phone').value.trim();
+if (!phone.startsWith("+")) {
+  phone = "+964" + phone;
+}
       const occupation = document.getElementById('occupation').value;
       
       // Save to Supabase
