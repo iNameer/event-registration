@@ -83,7 +83,7 @@
       e.preventDefault();
 
       const name = document.getElementById('name').value.trim();
-      let phone = document.getElementById('phone').value.trim();
+      const phone = document.getElementById('phone').value.trim();
       const occupation = document.getElementById('occupation').value;
 
       // (Optional) ensure international format if needed:
@@ -108,8 +108,7 @@
       }
 
       // 2️⃣ Send plain-text WhatsApp via UltraMsg
-const message = `السادة المشاركون الكرام
-
+      const message = `مرحباً ${name}،
 يسرّ فريق رؤيا – اللجنة المنظمة أن يُعلن عن قبولكم للمشاركة في المعرض والمؤتمر العالمي العراقي لطب الأسنان، والذي سيُقام في
  
 📍قاعة الأبرار – الجادرية - بغداد
