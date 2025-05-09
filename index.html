@@ -108,7 +108,51 @@
       }
 
       // 2️⃣ Send plain-text WhatsApp via UltraMsg
-      const message = `مرحباً ${name}،
+      async function sendWhatsAppConfirmation(phone, message) {
+    const url = "https://api.ultramsg.com/instance117965/messages/chat";
+    const body = {
+      token: "7rn5yw3sjmdr3hnf",
+      to: phone,
+      body: message
+    };
+    let lastError = null;
+
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(body)
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+
+        const data = await res.json();
+        // UltraMsg returns { sent: true, … } when successful
+        if (data.sent || data.status === "sent") {
+          return true;
+        } else {
+          lastError = new Error("UltraMsg responded with status: " + data.status);
+        }
+      } catch (err) {
+        console.error(`WhatsApp send attempt ${attempt} failed:`, err);
+        lastError = err;
+      }
+      // small delay before retry
+      await new Promise(r => setTimeout(r, 500));
+    }
+
+    console.error("All WhatsApp send attempts failed:", lastError);
+    return false;
+  }
+
+  // inside your form-submission async function, after your Supabase fetch:
+  const message = `مرحباً ${name}،
 يسرّ فريق رؤيا – اللجنة المنظمة أن يُعلن عن قبولكم للمشاركة في المعرض والمؤتمر العالمي العراقي لطب الأسنان، والذي سيُقام في
  
 📍قاعة الأبرار – الجادرية - بغداد
@@ -130,19 +174,15 @@
 مع خالص التقدير،
 تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
 
-await fetch("https://api.ultramsg.com/instance117965/messages/chat", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    token: "7rn5yw3sjmdr3hnf",
-    to: phone,
-    body: message
-  })
-});
+  const sent = await sendWhatsAppConfirmation(phone, message);
 
+  if (sent) {
+    alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
+  } else {
+    alert("✅ تم التسجيل، لكن حدثت مشكلة في إرسال رسالة واتساب.");
+  }
 
-      alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
-      document.getElementById('registrationForm').reset();
+  document.getElementById('registrationForm').reset();
     });
   </script>
 </body>
