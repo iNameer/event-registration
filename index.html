@@ -79,9 +79,8 @@
       return;
     }
 
-      const message = `مرحباً ${name}،
-
-
+      // ✅ WhatsApp plain text message via UltraMsg
+const message = `مرحباً ${name}،   
 يسرّ فريق رؤيا – اللجنة المنظمة أن يُعلن عن قبولكم للمشاركة في المعرض والمؤتمر العالمي العراقي لطب الأسنان، والذي سيُقام في
  
 📍قاعة الأبرار – الجادرية - بغداد
@@ -103,21 +102,17 @@
 مع خالص التقدير،
 تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
 
-      const send = await fetch("https://api.ultramsg.com/instance117965/messages/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          token: "7rn5yw3sjmdr3hnf",
-          to: phone,
-          caption: message
-        })
-      });
+await fetch("https://api.ultramsg.com/instance117965/messages/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    token: "7rn5yw3sjmdr3hnf",
+    to: phone,
+    body: message
+  })
+});
 
-       const result = await send.json();
-      if (result.sent || result.status === "sent") {
-        alert("✅ تم التسجيل وتم إرسال الرمز عبر واتساب.");
-      } else {
-        alert("تم التسجيل، لكن لم يتم إرسال الواتساب.");
+alert("✅ تم التسجيل وإرسال رسالة تأكيد الحجز عبر واتساب.");
       }
 
     
