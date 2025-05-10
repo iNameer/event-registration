@@ -130,14 +130,14 @@
 مع خالص التقدير،
 تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
 
-await fetch("https://ultramsg.abdullahproxy.workers.dev", {
+await fetch("https://ultramsg-proxy.ruyacompany.workers.dev", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    phone: phone,       // Example: +9647700000000
-    message: message    // Your full Arabic message
+    phone: phone,         // e.g. +9647700000000
+    message: message      // your Arabic message
   })
 })
 .then(async res => {
@@ -150,7 +150,7 @@ await fetch("https://ultramsg.abdullahproxy.workers.dev", {
   }
 })
 .catch(err => {
-  alert("⚠️ حدث خطأ أثناء الاتصال بالخادم.");
+  alert("❌ حدث خطأ أثناء إرسال الرسالة.");
   console.error("Fetch error:", err);
 });
 
