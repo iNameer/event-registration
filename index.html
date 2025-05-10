@@ -130,15 +130,17 @@
 مع خالص التقدير،
 تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
 
-await fetch("https://api.ultramsg.com/instance117965/messages/chat", {
+await fetch("https://whatsapp-proxy.ruyacompany.workers.dev", {
   method: "POST",
-  headers: { "Content-Type": "application/json" },
+  headers: {
+    "Content-Type": "application/json"
+  },
   body: JSON.stringify({
-    token: "7rn5yw3sjmdr3hnf",
-    to: phone,
-    body: message
+    phone,
+    message
   })
 });
+
 
 
       alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
