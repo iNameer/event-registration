@@ -130,20 +130,30 @@
 مع خالص التقدير،
 تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
 
-await fetch("https://whatsapp-proxy.ruyacompany.workers.dev", {
+await fetch("https://ultramsg.abdullahproxy.workers.dev", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    phone,
-    message
+    phone: phone,       // Example: +9647700000000
+    message: message    // Your full Arabic message
   })
+})
+.then(async res => {
+  const result = await res.json();
+  if (result.sent || result.status === "sent") {
+    alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
+  } else {
+    alert("✅ تم التسجيل، لكن لم يتم إرسال رسالة واتساب.");
+    console.warn("⚠️ UltraMsg response:", result);
+  }
+})
+.catch(err => {
+  alert("⚠️ حدث خطأ أثناء الاتصال بالخادم.");
+  console.error("Fetch error:", err);
 });
 
-
-
-      alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
       document.getElementById('registrationForm').reset();
     });
   </script>
