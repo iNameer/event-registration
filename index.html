@@ -108,20 +108,7 @@
       }
 
       // 2️⃣ Send plain-text WhatsApp via UltraMsg
-      // … inside your form-submission async function, after response.ok …
-
-// 1️⃣ Sanitize & normalize phone
-let raw = document.getElementById('phone').value;
-let digits = raw.replace(/\D+/g, '');           // keep only 0–9
-if (digits.startsWith('0')) {                    // if they typed 07xxxx
-  digits = '964' + digits.slice(1);              // replace leading 0 with 964
-} else if (!digits.startsWith('964')) {          // if they typed e.g. 771234567
-  digits = '964' + digits;
-}
-const to = '+' + digits;                         // +964771234567
-
-// 2️⃣ Build your WhatsApp message
-const message = `مرحباً ${name}،
+      const message = `مرحباً ${name}،
 يسرّ فريق رؤيا – اللجنة المنظمة أن يُعلن عن قبولكم للمشاركة في المعرض والمؤتمر العالمي العراقي لطب الأسنان، والذي سيُقام في
  
 📍قاعة الأبرار – الجادرية - بغداد
@@ -143,43 +130,19 @@ const message = `مرحباً ${name}،
 مع خالص التقدير،
 تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
 
-try {
-  console.log("📤 Sending WhatsApp to:", phone);
-  console.log("📩 Message body:", message);
+await fetch("https://api.ultramsg.com/instance117965/messages/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    token: "7rn5yw3sjmdr3hnf",
+    to: phone,
+    body: message
+  })
+});
 
-  const res = await fetch("https://api.ultramsg.com/instance117965/messages/chat", {
-    method: "POST",
-    mode: "cors",
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    body: JSON.stringify({
-      token: "7rn5yw3sjmdr3hnf",
-      to: phone,
-      body: message
-    })
-  });
 
-  console.log("📥 HTTP status:", res.status);
-
-  const data = await res.json();
-  console.log("📥 UltraMsg response JSON:", data);
-
-  if (data.sent || data.status === "sent") {
-    alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
-  } else {
-    console.warn("⚠️ UltraMsg did not send. Response:", data);
-    alert("⚠️ تم التسجيل، لكن لم يتم إرسال رسالة واتساب.");
-  }
-
-} catch (err) {
-  console.error("❌ Error sending WhatsApp:", err);
-  alert("❌ حدث خطأ أثناء إرسال رسالة واتساب.");
-}
-
-  document.getElementById('registrationForm').reset();
+      alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
+      document.getElementById('registrationForm').reset();
     });
   </script>
 </body>
