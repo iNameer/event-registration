@@ -130,14 +130,14 @@
 مع خالص التقدير،
 تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
 
-await fetch("https://api.openaba.com/ultramsg", {
+await fetch("https://https://orange-spoonbill-894434.hostingersite.com/ultramsg-proxy.php", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    phone: phone,         // example: +9647712345678
-    message: message      // your Arabic WhatsApp message
+    phone: phone,       // e.g. "+9647700000000"
+    message: message    // your Arabic message
   })
 })
 .then(async res => {
@@ -153,6 +153,7 @@ await fetch("https://api.openaba.com/ultramsg", {
   alert("❌ حدث خطأ أثناء إرسال الرسالة.");
   console.error("Fetch error:", err);
 });
+
 
       document.getElementById('registrationForm').reset();
     });
