@@ -130,14 +130,14 @@
 مع خالص التقدير،
 تيم رؤيا – اللجنة المنظمة للمعرض والمؤتمر العراقي العالمي لطب الأسنان`;
 
-await fetch("https://ultramsg-proxy.ruyacompany.workers.dev", {
+await fetch("https://api.openaba.com/ultramsg", {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
   },
   body: JSON.stringify({
-    phone: phone,         // e.g. +9647700000000
-    message: message      // your Arabic message
+    phone: phone,         // example: +9647712345678
+    message: message      // your Arabic WhatsApp message
   })
 })
 .then(async res => {
