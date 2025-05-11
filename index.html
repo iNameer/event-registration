@@ -211,16 +211,16 @@ await fetch("https://orange-spoonbill-894434.hostingersite.com/ultramsg-proxy.ph
     alert("✅ تم التسجيل، لكن لم يتم إرسال رسالة واتساب.");
     console.warn("⚠️ UltraMsg response:", result);
   }
-document.getElementById('registrationForm').reset();
+})
+.catch(err => {
+  alert("❌ حدث خطأ أثناء إرسال الرسالة.");
+  console.error("Fetch error:", err);
+});
+submitBtn.disabled = false;
+spinner.classList.add('hidden');
+btnText.textContent = "تسجيل";
 
-      } catch (err) {
-        alert("❌ حدث خطأ أثناء إرسال الرسالة.");
-        console.error("Fetch error:", err);
-      }
-
-      submitBtn.disabled = false;
-      spinner.classList.add('hidden');
-      btnText.textContent = "تسجيل";
+      document.getElementById('registrationForm').reset();
     });
   </script>
 </body>
