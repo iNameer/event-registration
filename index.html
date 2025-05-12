@@ -137,7 +137,7 @@
       const phone = document.getElementById('phone').value.trim();
       const occupation = document.getElementById('occupation').value;
 
-     const submitBtn = document.getElementById('submitBtn');
+      const submitBtn = document.getElementById('submitBtn');
       const spinner = submitBtn.querySelector('.spinner');
       const btnText = submitBtn.querySelector('.btn-text');
 
@@ -204,23 +204,25 @@ await fetch("https://orange-spoonbill-894434.hostingersite.com/ultramsg-proxy.ph
   })
 })
 .then(async res => {
-  const result = await res.json();
-  if (result.sent || result.status === "sent") {
-    alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
-  } else {
-    alert("✅ تم التسجيل، لكن لم يتم إرسال رسالة واتساب.");
-    console.warn("⚠️ UltraMsg response:", result);
-  }
-})
-.catch(err => {
-  alert("❌ حدث خطأ أثناء إرسال الرسالة.");
-  console.error("Fetch error:", err);
-});
-submitBtn.disabled = false;
-spinner.classList.add('hidden');
-btnText.textContent = "تسجيل";
+   const result = await send.json();
 
-      document.getElementById('registrationForm').reset();
+        if (result.sent || result.status === "sent") {
+          alert("✅ تم التسجيل وإرسال رسالة تأكيد عبر واتساب.");
+        } else {
+          alert("✅ تم التسجيل، لكن لم يتم إرسال رسالة واتساب.");
+          console.warn("⚠️ UltraMsg response:", result);
+        }
+
+        document.getElementById('registrationForm').reset();
+
+      } catch (err) {
+        alert("❌ حدث خطأ أثناء إرسال الرسالة.");
+        console.error("Fetch error:", err);
+      }
+
+      submitBtn.disabled = false;
+      spinner.classList.add('hidden');
+      btnText.textContent = "تسجيل";
     });
   </script>
 </body>
