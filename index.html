@@ -149,7 +149,7 @@ await fetch("https://orange-spoonbill-894434.hostingersite.com/ultramsg-proxy.ph
 .then(async res => {
   const result = await res.json();
   if (result.sent || result.status === "sent") {
-    alert("✅ تم التسجيل وإرسال تفاصيل الحجز عبر الواتساب.");
+    alert("✅ تم التسجيل وسوف يتم إرسال تفاصيل الحجز عبر الواتساب.");
   } else {
     alert("✅ تم التسجيل، لكن لم يتم إرسال رسالة الواتساب.");
     console.warn("⚠️ UltraMsg response:", result);
