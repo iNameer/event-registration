@@ -211,7 +211,7 @@
 
 نتطلع لرؤيتك!`;
 
-      const send = await fetch("https://api.ultramsg.com/instance117965/messages/image", {
+      const send = await fetch("https://orange-spoonbill-894434.hostingersite.com/ultramsg-proxyqr.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -219,15 +219,21 @@
           to: phone,
           image: base64QR,
           caption: message
-        })
-      });
-
-      const result = await send.json();
-      if (result.sent || result.status === "sent") {
-        alert("✅ تم التسجيل وتم إرسال الرمز عبر واتساب.");
-      } else {
-        alert("تم التسجيل، لكن لم يتم إرسال الواتساب.");
-      }
+       })
+})
+.then(async res => {
+  const result = await res.json();
+  if (result.sent || result.status === "sent") {
+    alert("✅ تم التسجيل وإرسال تفاصيل الحجز عبر الواتساب.");
+  } else {
+    alert("✅ تم التسجيل، لكن لم يتم إرسال رسالة الواتساب.");
+    console.warn("⚠️ UltraMsg response:", result);
+  }
+})
+.catch(err => {
+  alert("❌ حدث خطأ أثناء إرسال الرسالة.");
+  console.error("Fetch error:", err);
+});
 
     document.getElementById('registrationForm').reset();
   });
