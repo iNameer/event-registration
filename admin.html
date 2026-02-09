@@ -152,12 +152,12 @@
     const unique_id = crypto.randomUUID();
     const registered_by = sessionStorage.getItem("admin_user");
 
-    const response = await fetch("https://vwaaflcmhmfggesqpwoa.supabase.co/rest/v1/attendees", {
+    const response = await fetch("https://qwsjadikpeireuvncxli.supabase.co/rest/v1/attendees", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1MTA2NDAsImV4cCI6MjA2MTA4NjY0MH0.WbQOM5ge0xNQhItR5ai-Kyr0nARf2AizINm-4RDO1ok",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3YWFmbGNtaG1mZ2dlc3Fwd29hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU1MTA2NDAsImV4cCI6MjA2MTA4NjY0MH0.WbQOM5ge0xNQhItR5ai-Kyr0nARf2AizINm-4RDO1ok",
+        "apikey": "sb_publishable_fd6qXhmf46bpcjTtuQSvmQ_1trMWQJY",
+        "Authorization": "Bearer sb_publishable_fd6qXhmf46bpcjTtuQSvmQ_1trMWQJY",
         "Prefer": "return=representation"
       },
       body: JSON.stringify({ name, phone, occupation, unique_id, registered_by })
@@ -202,7 +202,7 @@
 
       const message = `مرحباً ${name}،
 
-شكرًا لتسجيلك في مؤتمر IQIDS 🎓
+شكرًا لتسجيلك في مؤتمر ICIPC 🎓
 
 يرجى الاحتفاظ برمز QR المرفق — ستحتاجه عند الدخول إلى المؤتمر.
 
@@ -211,11 +211,11 @@
 
 نتطلع لرؤيتك!`;
 
-      const send = await fetch("https://api.ultramsg.com/instance117965/messages/image", {
+      const send = await fetch("https://api.ultramsg.com/instance148231/messages/image", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          token: "155p5d8i614t6a2b",
+          token: "rr30a7bgfm5b020r",
           to: phone,
           image: base64QR,
           caption: message
