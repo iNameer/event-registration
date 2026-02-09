@@ -89,7 +89,7 @@
 <div id="formContainer" class="container" style="display:none;">
   <div class="header">
     <img src="logo.PNG" alt="شعار الشركة" />
-    <h1>استمارة تسجيل مؤتمر IQIDS</h1>
+    <h1>استمارة تسجيل مؤتمر ICIPC</h1>
   </div>
   <form id="registrationForm">
     <label for="name">الاسم الثلاثي باللغة الإنكليزية</label>
@@ -98,18 +98,7 @@
     <label for="phone">رقم الهاتف</label>
     <div class="note">يجب أن يحتوي على واتساب – يرجى إدخال الرقم مع مفتاح الدولة (:964xxxxxxx+)</div>
     <input type="tel" id="phone" name="phone" required />
-    <label for="occupation">المهنة</label>
-<div class="note">يرجى اختيار المهنة من القائمة</div>
-<select id="occupation" name="occupation" required>
-  <option value="">اختر المهنة</option>
-  <option value="طبيب أسنان">طبيب أسنان</option>
-  <option value="تقني صناعة أسنان">تقني صناعة أسنان</option>
-  <option value="أستاذ جامعي">أستاذ جامعي</option>
-  <option value="طالب">طالب</option>
-  <option value="زائر">زائر</option>
-  <option value="أخرى">أخرى</option>
-</select>
-
+    
     <button type="submit">تسجيل</button>
   </form>
 </div>
@@ -148,7 +137,6 @@
     e.preventDefault();
     const name = document.getElementById('name').value.trim();
     const phone = document.getElementById('phone').value.trim();
-    const occupation = document.getElementById('occupation').value.trim();
     const unique_id = crypto.randomUUID();
     const registered_by = sessionStorage.getItem("admin_user");
 
@@ -160,7 +148,7 @@
         "Authorization": "Bearer sb_publishable_fd6qXhmf46bpcjTtuQSvmQ_1trMWQJY",
         "Prefer": "return=representation"
       },
-      body: JSON.stringify({ name, phone, occupation, unique_id, registered_by })
+      body: JSON.stringify({ name, phone, unique_id, registered_by })
     });
 
     if (!response.ok) {
