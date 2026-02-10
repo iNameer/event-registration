@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تسجيل مؤتمر IQIDS</title>
+  <title>تسجيل مؤتمر ICIPC</title>
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
   <style>
@@ -26,7 +26,7 @@
     }
     .header { text-align: center; margin-bottom: 20px; }
     .header img { max-width: 300px; }
-    .header h1 { font-size: 22px; margin: 10px 0 0; color: #a72828; }
+    .header h1 { font-size: 22px; margin: 10px 0 0; color: #d6b42b; }
     label { display: block; margin-top: 15px; margin-bottom: 5px; font-weight: bold; }
     .note { font-size: 13px; color: #555; margin-top: 5px; }
     input, select {
@@ -38,7 +38,7 @@
     }
     button {
       margin-top: 20px;
-      background-color: #a72828;
+      background-color: #d6b42b;
       color: white;
       border: none;
       padding: 12px;
@@ -47,14 +47,14 @@
       font-size: 16px;
       cursor: pointer;
     }
-    button:hover { background-color: #8c1e1e; }
+    button:hover { background-color: #e0c453; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <img src="logo.PNG" alt="شعار الشركة" />
-      <h1>استمارة تسجيل مؤتمر IQIDS</h1>
+      <h1>استمارة تسجيل مؤتمر ICIPC</h1>
     </div>
     <form id="registrationForm">
       <label for="name">الاسم الثلاثي باللغة الإنكليزية</label>
@@ -65,8 +65,7 @@
       <label for="occupation">اختر حضورك</label>
       <select id="occupation" name="occupation" required>
         <option value="">اختر حضورك</option>
-        <option value="طبيب أسنان">طبيب أسنان</option>
-        <option value="تقني صناعة أسنان">تقني صناعة أسنان</option>
+        <option value="صيدلاني">صيدلاني</option>
         <option value="أستاذ جامعي">أستاذ جامعي</option>
         <option value="طالب">طالب</option>
         <option value="زائر">زائر</option>
