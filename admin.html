@@ -158,15 +158,15 @@
 
       // Generate QR
       const qr = new QRCodeStyling({
-        width: 512,
-        height: 512,
+        width: 1028,
+        height: 1028,
         data: unique_id,
         image: "logoqr.PNG",
         dotsOptions: { color: "#070e4d", type: "rounded" },
         cornersSquareOptions: { type: "extra-rounded", color: "#070e4d" },
         cornersDotOptions: { type: "dot", color: "#070e4d" },
         backgroundOptions: { color: "#ffffff" },
-        imageOptions: { crossOrigin: "anonymous", imageSize: 0.2 }
+        imageOptions: { crossOrigin: "anonymous", imageSize: 0.28, margin: 5 }
       });
 
       const blob = await qr.getRawData("png");
