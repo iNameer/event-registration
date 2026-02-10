@@ -158,23 +158,23 @@
 
       // Generate QR
       const qr = new QRCodeStyling({
-        width: 1028,
-        height: 1028,
+        width: 1024,
+        height: 1024,
         data: unique_id,
         image: "logoqr.PNG",
         dotsOptions: { color: "#070e4d", type: "rounded" },
         cornersSquareOptions: { type: "extra-rounded", color: "#070e4d" },
         cornersDotOptions: { type: "dot", color: "#070e4d" },
         backgroundOptions: { color: "#ffffff" },
-        imageOptions: { crossOrigin: "anonymous", imageSize: 0.28, margin: 5 }
+        imageOptions: { crossOrigin: "anonymous", imageSize: 0.28, margin: 6 }
       });
 
       const blob = await qr.getRawData("png");
       const imgBitmap = await createImageBitmap(blob);
 
       const finalCanvas = document.createElement("canvas");
-      finalCanvas.width = 512;
-      finalCanvas.height = 580;
+      finalCanvas.width = 1024;
+      finalCanvas.height = 1150;
       const ctx = finalCanvas.getContext("2d");
 
       ctx.fillStyle = "#ffffff";
@@ -182,9 +182,10 @@
       ctx.drawImage(imgBitmap, 0, 0);
 
       ctx.fillStyle = "#070e4d";
-      ctx.font = "22px Tajawal, sans-serif";
+      ctx.font = "28px Tajawal, sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText(name, 256, 560);
+      ctx.textBaseline = "middle";
+      ctx.fillText(name, 512, 1100);
 
       const base64QR = finalCanvas.toDataURL("image/png");
 
